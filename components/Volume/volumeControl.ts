@@ -133,6 +133,61 @@ const braveStreamDetected = createPoll(
   async () => (await getBraveStreamInfo()) !== null,
 );
 
+export interface SinkInput {
+  id: number;
+  name: string;
+  iconName: string;
+  volume: number;
+  mute: boolean;
+}
+
+function parseSinkInputs(stdout: string): SinkInput[] {
+  const results: SinkInput[] = [];
+  for (const block of stdout.split(/\n(?=Sink Input #\d+)/g)) {
+    const idMatch = block.match(/Sink Input #(\d+)/);
+    if (!idMatch) continue;
+    const nameMatch = block.match(/application\.name = "([^"]+)"/);
+    if (!nameMatch) continue;
+    const iconMatch = block.match(/application\.icon_name = "([^"]+)"/);
+    const binaryMatch = block.match(/application\.process\.binary = "([^"]+)"/);
+    const volumeMatch = block.match(/Volume:[^\n]*?(\d+)%/);
+    const muteMatch = block.match(/Mute: (yes|no)/);
+    results.push({
+      id: Number(idMatch[1]),
+      name: nameMatch[1],
+      iconName: iconMatch?.[1] ?? binaryMatch?.[1] ?? "audio-card",
+      volume: Number(volumeMatch?.[1] ?? 0),
+      mute: muteMatch?.[1] === "yes",
+    });
+  }
+  return results;
+}
+
+export const sinkInputs = createPoll([] as SinkInput[], 1500, async () => {
+  try {
+    const stdout = await execAsync(["pactl", "list", "sink-inputs"]);
+    return parseSinkInputs(stdout);
+  } catch {
+    return [];
+  }
+});
+
+export async function setSinkInputVolume(
+  id: number,
+  percent: number,
+): Promise<void> {
+  await execAsync([
+    "pactl",
+    "set-sink-input-volume",
+    String(id),
+    `${Math.max(0, Math.min(150, Math.round(percent)))}%`,
+  ]);
+}
+
+export async function toggleSinkInputMute(id: number): Promise<void> {
+  await execAsync(["pactl", "set-sink-input-mute", String(id), "toggle"]);
+}
+
 export {
   sinkVolumePercent,
   sinkMute,

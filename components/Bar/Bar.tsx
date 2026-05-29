@@ -35,9 +35,9 @@ export default function Bar({ setIsOpen, monitor = 0 }: BarProps) {
       exclusivity={exlusivity.EXCLUSIVE}
     >
       <centerbox
-        startWidget={<Section content={<Temp />} />}
+        startWidget={<Section content={<Workspaces />} />}
         centerWidget={<Section content={<Clock />} />}
-        endWidget={<Section content={<Workspaces />} />}
+        endWidget={<Section content={<Temp />} />}
       />
     </window>
   );
