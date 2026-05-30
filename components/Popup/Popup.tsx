@@ -18,19 +18,27 @@ export default function Popup({
 }: PopupProps) {
   const anchor = Astal.WindowAnchor;
 
+  // Scroll wrapper so content never overflows off-screen
+  const scroll = new Gtk.ScrolledWindow({
+    hscrollbarPolicy: Gtk.PolicyType.NEVER,
+    vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
+    propagateNaturalHeight: true,
+    maxContentHeight: 700,
+  });
+  scroll.set_child(children as unknown as Gtk.Widget);
+
   // Card created in JSX so css={PopupCss} applies to it and all inner widgets
   const card = (
     <box
       css={PopupCss}
       class="popup"
       orientation={Gtk.Orientation.VERTICAL}
-      spacing={8}
       halign={Gtk.Align.END}
       valign={Gtk.Align.START}
       marginTop={8}
       marginEnd={8}
     >
-      {children}
+      {scroll}
     </box>
   ) as unknown as Gtk.Widget;
 

@@ -3,6 +3,28 @@
   background: transparent;
 }
 
+.calendar-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.calendar-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  min-width: 28px;
+  min-height: 28px;
+  margin: 6px 6px 0 0;
+  padding: 0;
+}
+
+.calendar-close-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+}
+
 .popup {
   background-color: #18181b;
   border-radius: 16px;
@@ -73,6 +95,22 @@ slider slider {
   min-width: 14px;
   min-height: 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Player source dropdown ──────────────────────────────── */
+.player-dropdown {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #ffffff;
+  min-height: 28px;
+  font-size: 0.85rem;
+}
+
+.player-dropdown button {
+  background: transparent;
+  border: none;
+  padding: 0 8px;
 }
 
 /* ── Media player ────────────────────────────────────────── */

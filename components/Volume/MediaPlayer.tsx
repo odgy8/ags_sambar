@@ -121,20 +121,61 @@ export default function MediaPlayer() {
   );
   onCleanup(() => mpris.disconnect(id));
 
-  const container = new Gtk.Box({});
+  let selectedIndex = 0;
 
-  const render = (list: AstalMpris.Player[]) => {
-    while (container.get_first_child()) {
-      container.get_first_child()!.unparent();
+  const outer = new Gtk.Box({
+    orientation: Gtk.Orientation.VERTICAL,
+    spacing: 8,
+  });
+
+  const cardSlot = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+
+  const renderCard = (list: AstalMpris.Player[]) => {
+    while (cardSlot.get_first_child()) {
+      cardSlot.get_first_child()!.unparent();
     }
     if (list.length > 0) {
-      container.append(<PlayerCard player={list[0]} />);
+      cardSlot.append(<PlayerCard player={list[selectedIndex]} />);
     }
   };
 
-  render(players());
+  const render = () => {
+    const list = players.peek();
+
+    while (outer.get_first_child()) {
+      outer.get_first_child()!.unparent();
+    }
+
+    if (list.length === 0) return;
+
+    if (list.length > 1) {
+      const names = new Gtk.StringList();
+      list.forEach((p) => names.append(p.identity || p.busName));
+
+      selectedIndex = Math.min(selectedIndex, list.length - 1);
+
+      const dropdown = new Gtk.DropDown({
+        model: names,
+        selected: selectedIndex,
+        hexpand: true,
+      });
+      dropdown.add_css_class("player-dropdown");
+      dropdown.connect("notify::selected", () => {
+        selectedIndex = dropdown.get_selected();
+        renderCard(list);
+      });
+      outer.append(dropdown);
+    } else {
+      selectedIndex = 0;
+    }
+
+    outer.append(cardSlot);
+    renderCard(list);
+  };
+
+  render();
   const unsub = players.subscribe(render);
   onCleanup(unsub);
 
-  return container;
+  return outer;
 }
