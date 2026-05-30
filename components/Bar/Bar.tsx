@@ -8,18 +8,19 @@ import BarCss from "./Bar.css";
 import Section from "../../widgets/Section";
 import Workspaces from "../Workspaces/Workspaces";
 import Clock from "../../widgets/Clock";
-import Tray from "../Tray/Tray";
 import { sinkMute } from "../Volume/volumeControl";
 
 interface BarProps {
   setIsOpen: Setter<boolean>;
   setIsCalendarOpen: Setter<boolean>;
+  setIsTrayOpen: Setter<boolean>;
   monitor: number;
 }
 
 export default function Bar({
   setIsOpen,
   setIsCalendarOpen,
+  setIsTrayOpen,
   monitor = 0,
 }: BarProps) {
   const anchor = Astal.WindowAnchor;
@@ -35,7 +36,9 @@ export default function Bar({
 
   const Right = () => (
     <box spacing={8}>
-      <Tray />
+      <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
+        <label label="󰀻" />
+      </button>
       <button class="bar-volume-btn" onClicked={() => setIsOpen(true)}>
         <label label={volumeIcon} />
       </button>

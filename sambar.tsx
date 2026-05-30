@@ -13,6 +13,7 @@ import Bar from "./components/Bar/Bar";
 import Popup from "./components/Popup/Popup";
 import Volume from "./components/Volume/Volume";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
+import Tray from "./components/Tray/Tray";
 
 app.start({
   css: style + BarCss + PopupCss + ButtonCss,
@@ -25,16 +26,23 @@ app.start({
     const [isCalendarOpen1, setIsCalendarOpen1] = createState<boolean>(false);
     const [isCalendarOpen2, setIsCalendarOpen2] = createState<boolean>(false);
 
-    Bar({ monitor: 0, setIsOpen: setIsOpen0, setIsCalendarOpen: setIsCalendarOpen0 });
+    const [isTrayOpen0, setIsTrayOpen0] = createState<boolean>(false);
+    const [isTrayOpen1, setIsTrayOpen1] = createState<boolean>(false);
+    const [isTrayOpen2, setIsTrayOpen2] = createState<boolean>(false);
+
+    Bar({ monitor: 0, setIsOpen: setIsOpen0, setIsCalendarOpen: setIsCalendarOpen0, setIsTrayOpen: setIsTrayOpen0 });
     Popup({ monitor: 0, isOpen: isOpen0, setIsOpen: setIsOpen0, children: <Volume /> });
+    Popup({ monitor: 0, isOpen: isTrayOpen0, setIsOpen: setIsTrayOpen0, children: <Tray /> });
     CalendarPopup({ monitor: 0, isOpen: isCalendarOpen0, setIsOpen: setIsCalendarOpen0 });
 
-    Bar({ monitor: 1, setIsOpen: setIsOpen1, setIsCalendarOpen: setIsCalendarOpen1 });
+    Bar({ monitor: 1, setIsOpen: setIsOpen1, setIsCalendarOpen: setIsCalendarOpen1, setIsTrayOpen: setIsTrayOpen1 });
     Popup({ monitor: 1, isOpen: isOpen1, setIsOpen: setIsOpen1, children: <Volume /> });
+    Popup({ monitor: 1, isOpen: isTrayOpen1, setIsOpen: setIsTrayOpen1, children: <Tray /> });
     CalendarPopup({ monitor: 1, isOpen: isCalendarOpen1, setIsOpen: setIsCalendarOpen1 });
 
-    Bar({ monitor: 2, setIsOpen: setIsOpen2, setIsCalendarOpen: setIsCalendarOpen2 });
+    Bar({ monitor: 2, setIsOpen: setIsOpen2, setIsCalendarOpen: setIsCalendarOpen2, setIsTrayOpen: setIsTrayOpen2 });
     Popup({ monitor: 2, isOpen: isOpen2, setIsOpen: setIsOpen2, children: <Volume /> });
+    Popup({ monitor: 2, isOpen: isTrayOpen2, setIsOpen: setIsTrayOpen2, children: <Tray /> });
     CalendarPopup({ monitor: 2, isOpen: isCalendarOpen2, setIsOpen: setIsCalendarOpen2 });
   },
 });

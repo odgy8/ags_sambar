@@ -33,6 +33,8 @@ export default function Workspaces() {
             {list.map((ws) => (
               <button
                 class={focused === ws.id ? "workspace active" : "workspace"}
+                widthRequest={28}
+                heightRequest={28}
                 onClicked={() => hypr.dispatch("workspace", String(ws.id))}
               >
                 <label label={String(ws.id)} />
