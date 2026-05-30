@@ -9,9 +9,7 @@ import {
 } from "./volumeControl";
 
 // Add app names or process binaries here to hide them from the mixer
-const HIDDEN: string[] = [
-  "pacat",
-];
+const HIDDEN: string[] = ["pacat", "gjs"];
 
 export default function AppMixer() {
   const listBox = new Gtk.Box({
@@ -42,11 +40,7 @@ export default function AppMixer() {
         >
           <label label={muteIcon} />
         </button>
-        <image
-          iconName={input.iconName}
-          widthRequest={16}
-          heightRequest={16}
-        />
+        <image iconName={input.iconName} widthRequest={16} heightRequest={16} />
         <label
           class="secondary-label"
           hexpand={false}
@@ -70,11 +64,7 @@ export default function AppMixer() {
             return false;
           }}
         />
-        <label
-          class="pct-label"
-          xalign={1}
-          label={`${input.volume}%`}
-        />
+        <label class="pct-label" xalign={1} label={`${input.volume}%`} />
       </box>
     ) as unknown as Gtk.Widget;
   };
@@ -84,16 +74,18 @@ export default function AppMixer() {
     while (listBox.get_first_child()) {
       listBox.get_first_child()!.unparent();
     }
-    const inputs = sinkInputs.peek().filter(
-      (i) => !HIDDEN.includes(i.name) && !HIDDEN.includes(i.iconName),
-    );
+    const inputs = sinkInputs
+      .peek()
+      .filter((i) => !HIDDEN.includes(i.name) && !HIDDEN.includes(i.iconName));
     if (inputs.length === 0) {
       listBox.append(
-        <label
-          class="empty-label"
-          halign={Gtk.Align.CENTER}
-          label="No apps playing"
-        /> as unknown as Gtk.Widget,
+        (
+          <label
+            class="empty-label"
+            halign={Gtk.Align.CENTER}
+            label="No apps playing"
+          />
+        ) as unknown as Gtk.Widget,
       );
       return;
     }

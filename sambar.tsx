@@ -4,6 +4,9 @@ import { createState } from "ags";
 
 // Style imports
 import style from "./sambar.css";
+import BarCss from "./components/Bar/Bar.css";
+import PopupCss from "./components/Popup/Popup.css";
+import ButtonCss from "./widgets/Button.css";
 
 // Component imports
 import Bar from "./components/Bar/Bar";
@@ -12,7 +15,7 @@ import Volume from "./components/Volume/Volume";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
 
 app.start({
-  css: style,
+  css: style + BarCss + PopupCss + ButtonCss,
   main() {
     const [isOpen0, setIsOpen0] = createState<boolean>(false);
     const [isOpen1, setIsOpen1] = createState<boolean>(false);

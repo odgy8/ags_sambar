@@ -76,7 +76,7 @@ export default function CalendarPopup({
   const anchor = Astal.WindowAnchor;
 
   const webView = makeWebView();
-  webView.set_size_request(900, 700);
+  webView.set_size_request(1200, 800);
   webView.set_hexpand(false);
   webView.set_vexpand(false);
   webView.load_uri("https://calendar.google.com/calendar/r");
