@@ -8,6 +8,7 @@ import BarCss from "./Bar.css";
 import Section from "../../widgets/Section";
 import Workspaces from "../Workspaces/Workspaces";
 import Clock from "../../widgets/Clock";
+import Minimized from "../Minimized/Minimized";
 import { sinkMute } from "../Volume/volumeControl";
 
 interface BarProps {
@@ -36,11 +37,12 @@ export default function Bar({
 
   const Right = () => (
     <box spacing={8}>
-      <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
-        <label label="󰀻" />
-      </button>
       <button class="bar-volume-btn" onClicked={() => setIsOpen(true)}>
         <label label={volumeIcon} />
+      </button>
+      <Minimized />
+      <button class="bar-tray-btn" onClicked={() => setIsTrayOpen(true)}>
+        <label label="󰀻" />
       </button>
     </box>
   );

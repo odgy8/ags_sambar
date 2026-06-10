@@ -1,6 +1,7 @@
 // Package imports
 import app from "ags/gtk4/app";
 import { createState } from "ags";
+import Adw from "gi://Adw";
 
 // Style imports
 import style from "./sambar.css";
@@ -14,6 +15,9 @@ import Popup from "./components/Popup/Popup";
 import Volume from "./components/Volume/Volume";
 import CalendarPopup from "./components/Calendar/CalendarPopup";
 import Tray from "./components/Tray/Tray";
+import NotificationPopup from "./components/Notifications/NotificationPopup";
+
+Adw.StyleManager.get_default().colorScheme = Adw.ColorScheme.PREFER_DARK;
 
 app.start({
   css: style + BarCss + PopupCss + ButtonCss,
@@ -34,6 +38,7 @@ app.start({
     Popup({ monitor: 0, isOpen: isOpen0, setIsOpen: setIsOpen0, children: <Volume /> });
     Popup({ monitor: 0, isOpen: isTrayOpen0, setIsOpen: setIsTrayOpen0, children: <Tray /> });
     CalendarPopup({ monitor: 0, isOpen: isCalendarOpen0, setIsOpen: setIsCalendarOpen0 });
+    NotificationPopup({ monitor: 0 });
 
     Bar({ monitor: 1, setIsOpen: setIsOpen1, setIsCalendarOpen: setIsCalendarOpen1, setIsTrayOpen: setIsTrayOpen1 });
     Popup({ monitor: 1, isOpen: isOpen1, setIsOpen: setIsOpen1, children: <Volume /> });

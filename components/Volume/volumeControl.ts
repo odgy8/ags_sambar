@@ -133,6 +133,51 @@ const braveStreamDetected = createPoll(
   async () => (await getBraveStreamInfo()) !== null,
 );
 
+export interface Sink {
+  id: number;
+  name: string;
+  description: string;
+}
+
+function parseSinks(stdout: string): Sink[] {
+  const sinks: Sink[] = [];
+  for (const block of stdout.split(/\n(?=Sink #\d+)/g)) {
+    const idMatch = block.match(/Sink #(\d+)/);
+    if (!idMatch) continue;
+    const nameMatch = block.match(/Name: (.+)/);
+    const descMatch = block.match(/Description: (.+)/);
+    if (!nameMatch) continue;
+    sinks.push({
+      id: Number(idMatch[1]),
+      name: nameMatch[1].trim(),
+      description: descMatch?.[1].trim() ?? nameMatch[1].trim(),
+    });
+  }
+  return sinks;
+}
+
+export const sinks = createPoll([] as Sink[], 2000, async () => {
+  try {
+    const stdout = await execAsync(["pactl", "list", "sinks"]);
+    return parseSinks(stdout);
+  } catch {
+    return [];
+  }
+});
+
+export const defaultSinkName = createPoll("", 1000, async () => {
+  try {
+    const stdout = await execAsync(["pactl", "get-default-sink"]);
+    return stdout.trim();
+  } catch {
+    return "";
+  }
+});
+
+export async function setDefaultSink(name: string): Promise<void> {
+  await execAsync(["pactl", "set-default-sink", name]);
+}
+
 export interface SinkInput {
   id: number;
   name: string;
